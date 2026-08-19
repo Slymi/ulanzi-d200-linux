@@ -76,7 +76,6 @@ echo "6. Copying systemd service file..."
 if [ ! -f ~/.config/systemd/user/ulanzi-daemon.service ]; then
     mkdir -p ~/.config/systemd/user
     cp systemd/ulanzi-daemon.service ~/.config/systemd/user/
-    systemctl --user daemon-reload
     echo "   ✓ Systemd service file copied to ~/.config/systemd/user/ulanzi-daemon.service"
 else
     echo "   ✓ Systemd Service file already exists"
@@ -96,6 +95,7 @@ echo "5. Configure device: ulanzi-manager configure ~/.config/ulanzi/config.yaml
 echo "6. Start daemon: ulanzi-daemon ~/.config/ulanzi/config.yaml"
 echo
 echo "Optional - Enable systemd user service:"
+echo "  systemctl --user daemon-reload"
 echo "  systemctl --user enable ulanzi-daemon"
 echo "  systemctl --user start ulanzi-daemon"
 echo
