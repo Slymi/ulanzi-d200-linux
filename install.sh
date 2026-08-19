@@ -90,9 +90,10 @@ echo
 echo "Next steps:"
 echo "1. Reconnect your Ulanzi D200 device (if not already connected)"
 echo "2. Edit configuration: nano ~/.config/ulanzi/config.yaml"
-echo "3. Validate: ulanzi-manager validate ~/.config/ulanzi/config.yaml"
-echo "4. Configure device: ulanzi-manager configure ~/.config/ulanzi/config.yaml"
-echo "5. Start daemon: ulanzi-daemon ~/.config/ulanzi/config.yaml"
+echo "3. Enter venv: source ~/.local/ulanzi/venv/bin/activate (Select the appropriate activate script for your shell)"
+echo "4. Validate: ulanzi-manager validate ~/.config/ulanzi/config.yaml"
+echo "5. Configure device: ulanzi-manager configure ~/.config/ulanzi/config.yaml"
+echo "6. Start daemon: ulanzi-daemon ~/.config/ulanzi/config.yaml"
 echo
 echo "Optional - Enable systemd user service:"
 echo "  systemctl --user enable ulanzi-daemon"
