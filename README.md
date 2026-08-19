@@ -54,43 +54,6 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
    systemctl --user enable ulanzi-daemon
    systemctl --user start ulanzi-daemon
    ```
-   
-## Documentation
-
-- [📖 Start Here](docs/START_HERE.md)
-- [🚀 Quick Start & Setup](docs/QUICKSTART.md)
-- [⚙️ Setup Guide](docs/SETUP.md)
-- [🔧 Install Guide](docs/INSTALL.md)
-- [🐛 Debug & Troubleshooting](docs/DEBUG.md)
-- [📋 Quick Reference](docs/QUICK_REFERENCE.md)
-- [🎨 Icon Generation](docs/ICON_GENERATION.md)
-- [🎬 OBS API Reference](docs/OBS_API_REFERENCE.md)
-- [📦 Project Summary](docs/PROJECT_SUMMARY.md)
-
-## Configuration
-
-See [docs/QUICK_REFERENCE.md](docs/QUICK_REFERENCE.md) for complete config examples and [docs/START_HERE.md](docs/START_HERE.md) for guided setup.
-
-**Button Layout:**
-```
-0  1  2  3  4
-5  6  7  8  9
-10 11 12 13 (clock)
-```
-
-**Action Types:** `command`, `app`, `key`, `obs` (scenes, sources, recording, streaming)
-
-## Commands
-
-| Task | Command |
-|------|---------|
-| Check device | `ulanzi-manager status` |
-| Set brightness | `ulanzi-manager brightness 80` |
-| Apply config | `ulanzi-manager configure config.yaml` |
-| Validate config | `ulanzi-manager validate config.yaml` |
-| Test button image | `ulanzi-manager test-image 0 icon.png` |
-| Debug (show button presses) | `ulanzi-manager debug` |
-| Start daemon | `ulanzi-daemon config.yaml` |
 
 ## Image Preparation
 
@@ -112,22 +75,16 @@ buttons:
 ```
 
 See [docs/ICON_GENERATION.md](docs/ICON_GENERATION.md) for full icon spec options.
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Device not found | `sudo cp 99-ulanzi.rules /etc/udev/rules.d/`, reload, reconnect |
-| OBS not connecting | Enable WebSocket Server in OBS (Tools → WebSocket Server Settings) |
-| Keyboard shortcuts fail | Install xdotool: `sudo apt install xdotool` |
-| Permission denied | Ensure udev rule installed; reconnect device |
-
-See [docs/DEBUG.md](docs/DEBUG.md) for detailed troubleshooting.
+   
+## Documentation
+- [🔧 Install Guide](docs/INSTALL.md)
+- [🐛 Debug & Troubleshooting](docs/troubleshooting.md)
+- [📋 Quick Reference](docs/quick_reference.md)
+- [🎨 Icon Generation](docs/ICON_GENERATION.md)
+- [🎬 OBS API Reference](docs/OBS_API_REFERENCE.md)
+- [📦 Project Summary](docs/PROJECT_SUMMARY.md)
 
 ## Project Info
-
-**Logs:** `~/.local/share/ulanzi/daemon.log` (view with `tail -f`)
-
 **License:** MIT
 
 **References:**

@@ -1,21 +1,5 @@
 # Quick Reference Card
 
-## Debug Mode - Identify Buttons
-
-```bash
-source venv/bin/activate
-ulanzi-manager debug
-```
-
-Press buttons to see their index:
-```
-Button layout:
-  0  1  2  3  4
-  5  6  7  8  9
- 10 11 12
- 13 (Clock/Big Button)
-```
-
 ## Common Commands
 
 | Task | Command |
@@ -161,30 +145,18 @@ params:
   action: toggle_streaming
 ```
 
-## Troubleshooting
+### OBS - Toggle Replay Buffer
+```yaml
+action: obs
+params:
+  action: toggle_replay_buffer
+```
 
-| Problem | Solution |
-|---------|----------|
-| Device not found | `sudo cp 99-ulanzi.rules /etc/udev/rules.d/ && sudo udevadm control --reload-rules && sudo udevadm trigger` |
-| Images not showing | Check image paths, verify 196×196 PNG format, check logs |
-| Button 13 error | Use debug mode to identify buttons (only 0-12 exist) |
-| OBS not connecting | Enable WebSocket Server in OBS (Tools → WebSocket Server Settings) |
-| Keyboard shortcuts not working | Install xdotool: `sudo apt install xdotool` |
-
-## Logs
-
-```bash
-# Real-time logs
-tail -f ~/.local/share/ulanzi/daemon.log
-
-# Last 50 lines
-tail -50 ~/.local/share/ulanzi/daemon.log
-
-# Search for errors
-grep ERROR ~/.local/share/ulanzi/daemon.log
-
-# Search for button presses
-grep "Button.*pressed" ~/.local/share/ulanzi/daemon.log
+### OBS - Save Replay Buffer
+```yaml
+action: obs
+params:
+  action: save_replay_buffer
 ```
 
 ## Setup Checklist
@@ -209,15 +181,3 @@ grep "Button.*pressed" ~/.local/share/ulanzi/daemon.log
 | Logs | `~/.local/share/ulanzi/daemon.log` |
 | Icons | `./icons/` (relative to project) |
 | Udev rule | `/etc/udev/rules.d/99-ulanzi.rules` |
-
-## Useful Links
-
-- [README.md](README.md) - Full documentation
-- [DEBUG.md](DEBUG.md) - Debug guide
-- [SETUP.md](SETUP.md) - Setup guide
-- [QUICKSTART.md](QUICKSTART.md) - Quick start
-- [FIXES.md](FIXES.md) - Recent fixes
-
----
-
-**Tip**: Use `ulanzi-manager debug` to identify which button is which!
