@@ -97,6 +97,10 @@ class OBSAction(ActionHandler):
                 self._toggle_recording(params)
             elif action == 'toggle_streaming':
                 self._toggle_streaming(params)
+            elif action == 'toggle_replay_buffer':
+                self._toggle_replay_buffer(params)
+            elif action == 'save_replay_buffer':
+                self._save_replay_buffer(params)
             else:
                 logger.error(f"Unknown OBS action: {action}")
         except Exception as e:
@@ -187,6 +191,35 @@ class OBSAction(ActionHandler):
         except Exception as e:
             logger.error(f"Failed to toggle streaming: {e}")
 
+    def _toggle_replay_buffer(self, params: Dict[str, Any]):
+        """Toggle replay buffer"""
+        try:
+            status = self.obs_client.get_replay_buffer_status()
+            is_replaying = status.output_active
+
+            if is_replaying:
+                self.obs_client.stop_replay_buffer()
+                logger.info("Stopped replay buffer")
+            else:
+                self.obs_client.start_replay_buffer()
+                logger.info("Started replay buffer")
+        except Exception as e:
+            logger.error(f"Failed to toggle replay buffer: {e}")
+
+    def _save_replay_buffer(self, params: Dict[str, Any]):
+        """Save replay buffer"""
+
+        try:
+            status = self.obs_client.get_replay_buffer_status()
+            is_replaying = status.output_active
+
+            if is_replaying:
+                self.obs_client.save_replay_buffer()
+                logger.info(f"Saved replay buffer!")
+            else:
+                logger.error(f"Failed to save replay buffer: Replay buffer is not enabled!")
+        except Exception as e:
+            logger.error(f"Failed to save replay buffer: {e}")
 
 class ActionExecutor:
     """Execute button actions"""

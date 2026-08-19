@@ -7,13 +7,13 @@ setup(
     author="Lucas",
     packages=find_packages(),
     install_requires=[
-        "pyusb==1.2.1",
-        "hidapi==0.14.0",
-        "pyyaml==6.0.1",
-        "obs-websocket-py==0.5.3",
-        "pillow==10.1.0",
-        "python-daemon==3.0.1",
-        "deepdiff==8.6.1",
+        "pyusb>=1.3.1",
+        "hidapi>=0.15.0",
+        "pyyaml>=6.0.3",
+        "obsws-python>=1.8.0",
+        "pillow>=12.3.0",
+        "python-daemon>=3.1.2",
+        "deepdiff>=9.1.0",
     ],
     entry_points={
         "console_scripts": [

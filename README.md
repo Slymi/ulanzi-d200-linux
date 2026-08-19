@@ -39,6 +39,10 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
    ulanzi-daemon ~/.config/ulanzi/config.yaml
    ```
 
+### or
+
+1. **Run install.sh**
+
 ## Documentation
 
 - [📖 Start Here](docs/START_HERE.md)

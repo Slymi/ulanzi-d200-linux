@@ -71,6 +71,17 @@ else
     echo "   ✓ Configuration already exists"
 fi
 
+# Step 6: Copy over systemd service file
+echo "6. Copying systemd service file..."
+if [ ! -f ~/.config/systemd/user/ulanzi-daemon.service ]; then
+    mkdir -p ~/.config/systemd/user
+    cp systemd/ulanzi-daemon.service ~/.config/systemd/user/
+    systemctl --user daemon-reload
+    echo "   ✓ Systemd service file copied to ~/.config/systemd/user/ulanzi-daemon.service"
+else
+    echo "   ✓ Systemd Service file already exists"
+fi
+
 echo
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║              ✓ Installation Complete!                     ║"
