@@ -103,8 +103,21 @@ class OBSAction(ActionHandler):
                 self._save_replay_buffer(params)
             else:
                 logger.error(f"Unknown OBS action: {action}")
+        except BrokenPipeError:
+            logger.error("OBS WebSocket is broken. Deleting client.")
+            self._cleanup_client()
         except Exception as e:
-            logger.error(f"OBS action failed: {e}")
+            logger.error(f"OBS action {action} failed: {e}")
+
+    def _cleanup_client(self):
+            """Safely disconnect and reset the client state."""
+            if self.obs_client is not None:
+                try:
+                    self.obs_client.disconnect()
+                except Exception as e:
+                    logger.warning(f"Failed to cleanly disconnect OBS client: {e}")
+                finally:
+                    self.obs_client = None
 
     def _toggle_scene(self, params: Dict[str, Any]):
         """Toggle between two scenes"""
@@ -115,15 +128,12 @@ class OBSAction(ActionHandler):
             logger.error("toggle_scene requires 'scene1' and 'scene2' parameters")
             return
 
-        try:
-            current_scene = self.obs_client.get_current_program_scene()
-            current_name = current_scene.current_program_scene_name
+        current_scene = self.obs_client.get_current_program_scene()
+        current_name = current_scene.current_program_scene_name
 
-            target_scene = scene2 if current_name == scene1 else scene1
-            self.obs_client.set_current_program_scene(target_scene)
-            logger.info(f"Switched to scene: {target_scene}")
-        except Exception as e:
-            logger.error(f"Failed to toggle scene: {e}")
+        target_scene = scene2 if current_name == scene1 else scene1
+        self.obs_client.set_current_program_scene(target_scene)
+        logger.info(f"Switched to scene: {target_scene}")
 
     def _set_scene(self, params: Dict[str, Any]):
         """Set active scene"""
@@ -132,11 +142,8 @@ class OBSAction(ActionHandler):
             logger.error("set_scene requires 'scene' parameter")
             return
 
-        try:
-            self.obs_client.set_current_program_scene(scene)
-            logger.info(f"Set scene to: {scene}")
-        except Exception as e:
-            logger.error(f"Failed to set scene: {e}")
+        self.obs_client.set_current_program_scene(scene)
+        logger.info(f"Set scene to: {scene}")
 
     def _toggle_source(self, params: Dict[str, Any]):
         """Toggle source visibility"""
@@ -147,79 +154,64 @@ class OBSAction(ActionHandler):
             logger.error("toggle_source requires 'scene' and 'source' parameters")
             return
 
-        try:
-            # Get current visibility state
-            item = self.obs_client.get_scene_item_id(scene, source)
-            item_id = item.scene_item_id
+        # Get current visibility state
+        item = self.obs_client.get_scene_item_id(scene, source)
+        item_id = item.scene_item_id
 
-            state = self.obs_client.get_scene_item_enabled(scene, item_id)
-            enabled = state.scene_item_enabled
+        state = self.obs_client.get_scene_item_enabled(scene, item_id)
+        enabled = state.scene_item_enabled
 
-            # Toggle visibility
-            self.obs_client.set_scene_item_enabled(scene, item_id, not enabled)
-            logger.info(f"Toggled source '{source}' in scene '{scene}'")
-        except Exception as e:
-            logger.error(f"Failed to toggle source: {e}")
+        # Toggle visibility
+        self.obs_client.set_scene_item_enabled(scene, item_id, not enabled)
+        logger.info(f"Toggled source '{source}' in scene '{scene}'")
 
     def _toggle_recording(self, params: Dict[str, Any]):
         """Toggle recording"""
-        try:
-            status = self.obs_client.get_record_status()
-            is_recording = status.output_active
+        status = self.obs_client.get_record_status()
+        is_recording = status.output_active
 
-            if is_recording:
-                self.obs_client.stop_record()
-                logger.info("Stopped recording")
-            else:
-                self.obs_client.start_record()
-                logger.info("Started recording")
-        except Exception as e:
-            logger.error(f"Failed to toggle recording: {e}")
+        if is_recording:
+            self.obs_client.stop_record()
+            logger.info("Stopped recording")
+        else:
+            self.obs_client.start_record()
+            logger.info("Started recording")
 
     def _toggle_streaming(self, params: Dict[str, Any]):
         """Toggle streaming"""
-        try:
-            status = self.obs_client.get_stream_status()
-            is_streaming = status.output_active
+        status = self.obs_client.get_stream_status()
+        is_streaming = status.output_active
 
-            if is_streaming:
-                self.obs_client.stop_stream()
-                logger.info("Stopped streaming")
-            else:
-                self.obs_client.start_stream()
-                logger.info("Started streaming")
-        except Exception as e:
-            logger.error(f"Failed to toggle streaming: {e}")
+        if is_streaming:
+            self.obs_client.stop_stream()
+            logger.info("Stopped streaming")
+        else:
+            self.obs_client.start_stream()
+            logger.info("Started streaming")
 
     def _toggle_replay_buffer(self, params: Dict[str, Any]):
         """Toggle replay buffer"""
-        try:
-            status = self.obs_client.get_replay_buffer_status()
-            is_replaying = status.output_active
+        status = self.obs_client.get_replay_buffer_status()
+        is_replaying = status.output_active
 
-            if is_replaying:
-                self.obs_client.stop_replay_buffer()
-                logger.info("Stopped replay buffer")
-            else:
-                self.obs_client.start_replay_buffer()
-                logger.info("Started replay buffer")
-        except Exception as e:
-            logger.error(f"Failed to toggle replay buffer: {e}")
+        if is_replaying:
+            self.obs_client.stop_replay_buffer()
+            logger.info("Stopped replay buffer")
+        else:
+            self.obs_client.start_replay_buffer()
+            logger.info("Started replay buffer")
 
     def _save_replay_buffer(self, params: Dict[str, Any]):
         """Save replay buffer"""
 
-        try:
-            status = self.obs_client.get_replay_buffer_status()
-            is_replaying = status.output_active
+        status = self.obs_client.get_replay_buffer_status()
+        is_replaying = status.output_active
 
-            if is_replaying:
-                self.obs_client.save_replay_buffer()
-                logger.info(f"Saved replay buffer!")
-            else:
-                logger.error(f"Failed to save replay buffer: Replay buffer is not enabled!")
-        except Exception as e:
-            logger.error(f"Failed to save replay buffer: {e}")
+        if is_replaying:
+            self.obs_client.save_replay_buffer()
+            logger.info(f"Saved replay buffer!")
+        else:
+            logger.error("Replay buffer is not active. Cannot save.")
 
 class ActionExecutor:
     """Execute button actions"""
@@ -244,3 +236,12 @@ class ActionExecutor:
             handler.execute(params)
         except Exception as e:
             logger.error(f"Action execution failed: {e}")
+    
+    #Special functions for OBSAction
+    def update_obs_client(self, obs_client):
+        """Update the OBS client for the OBSAction handler"""
+        self.handlers['obs'].obs_client = obs_client
+    
+    def get_obs_client(self):
+        """Get the current OBS client from the OBSAction handler"""
+        return self.handlers['obs'].obs_client

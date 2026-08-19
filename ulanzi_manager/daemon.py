@@ -100,6 +100,9 @@ class UlanziDaemon:
         signal.signal(signal.SIGTERM, lambda s, f: self.stop())
         signal.signal(signal.SIGINT, lambda s, f: self.stop())
 
+        last_obs_check = 0
+        obs_reconnect_interval = 5  # Seconds between reconnection attempts
+
         try:
             while self.running:
                 # Read button presses (non-blocking)
@@ -107,6 +110,16 @@ class UlanziDaemon:
 
                 # Keep-alive
                 self.device.set_small_window_data({})
+
+                # Check OBS connection  
+                if not self.executor.get_obs_client():
+                    now = time.time()
+                    if now - last_obs_check >= obs_reconnect_interval:
+                        last_obs_check = now
+                        self._init_obs_client(0.1)
+                        #successfully reconnected, update the executor's obs_client
+                        if self.obs_client:
+                            self.executor.update_obs_client(self.obs_client)
 
                 time.sleep(0.1)
 
@@ -117,8 +130,11 @@ class UlanziDaemon:
         finally:
             self.stop()
 
-    def _init_obs_client(self):
+    def _init_obs_client(self, timeout=3):
         """Initialize OBS WebSocket client"""
+
+        #Reset state
+        self.obs_client = None
         try:
             import obsws_python as obs
 
@@ -126,7 +142,7 @@ class UlanziDaemon:
                 host=self.config.obs_host,
                 port=self.config.obs_port,
                 password=self.config.obs_password,
-                timeout=3
+                timeout=timeout
             )
             logger.info(f"Connected to OBS at {self.config.obs_host}:{self.config.obs_port}")
         except ImportError:
