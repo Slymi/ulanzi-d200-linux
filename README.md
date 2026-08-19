@@ -14,35 +14,47 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
 - 🌙 **Background Daemon** - Run as a systemd service
 
 ## Quick Start
+### Automated install
+1. **Clone / Download repository into your user directory**
 
-1. **Install udev rule:**
+2. **Run the automated installer script:**
    ```bash
-   sudo cp 99-ulanzi.rules /etc/udev/rules.d/
-   sudo udevadm control --reload-rules
-   sudo udevadm trigger
+   sudo sh install.sh
    ```
-
-2. **Install package:**
+   
+3. **Edit configuration file:**
+   > Example [here](examples/example_config.yaml)
    ```bash
-   pip install -e .
+   nano ~/.config/ulanzi/config.yaml
    ```
-
-3. **Configure:**
+   
+5. **Enter Python virtual enviroment:**
+   > Ensure you use the appropriate activate script for your shell!
    ```bash
-   ulanzi-manager generate-config ~/.config/ulanzi/config.yaml
-   # Edit the file and then:
+   source ~/.local/ulanzi/venv/bin/activate
+   ```
+   
+6. **Validate your configuration:**
+   ```bash
+   ulanzi-manager validate ~/.config/ulanzi/config.yaml
+   ```
+   
+7. **Configure the D200 device:**
+   ```bash
    ulanzi-manager configure ~/.config/ulanzi/config.yaml
    ```
-
-4. **Run daemon:**
+   
+8. **Start daemon:**
    ```bash
    ulanzi-daemon ~/.config/ulanzi/config.yaml
    ```
-
-### or
-
-1. **Run install.sh**
-
+9. **(Optional) Enable systemctl user service:**
+   ```bash
+   systemctl --user daemon-reload
+   systemctl --user enable ulanzi-daemon
+   systemctl --user start ulanzi-daemon
+   ```
+   
 ## Documentation
 
 - [📖 Start Here](docs/START_HERE.md)
