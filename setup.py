@@ -21,5 +21,5 @@ setup(
             "ulanzi-daemon=ulanzi_manager.daemon:main",
         ],
     },
-    python_requires=">=3.8",
+    python_requires=">=3.10",
 )
