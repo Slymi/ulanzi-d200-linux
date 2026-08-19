@@ -15,14 +15,31 @@ A Linux application for managing the Ulanzi D200 StreamDeck device. Configure bu
 
 ## Quick Start
 ### Automated install
-1. **Clone / Download repository into your user directory**
+1. **Install system dependencies:**
+   ### Ubuntu/Debian
+   ```bash
+   sudo apt update
+   sudo apt install python3 python3-pip python3-venv xdotool libhidapi-hidraw0
+   ```
 
-2. **Run the automated installer script:**
+   ### Fedora/RHEL
+   ```bash
+   sudo dnf install python3 python3-pip xdotool hidapi
+   ```
+
+   ### Arch
+   ```bash
+   sudo pacman -S python python-pip xdotool hidapi
+   ```
+
+2. **Clone / Download repository into your user directory**
+
+3. **Run the automated installer script:**
    ```bash
    sudo sh install.sh
    ```
    
-3. **Edit configuration file:**
+4. **Edit configuration file:**
    > Example [here](examples/example_config.yaml)
    ```bash
    nano ~/.config/ulanzi/config.yaml
