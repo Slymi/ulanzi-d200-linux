@@ -50,6 +50,14 @@ buttons:
       scene1: "Scene 1"
       scene2: "Scene 2"
 
+  # Button 4 - Start OBS minimised with replay buffer enabled
+  - image: ./icons/obs.png
+    label: Launch OBS
+    action: command
+    params:
+      cmd: "WAYLAND_DISPLAY=wayland-0 QT_QPA_PLATFORM=wayland obs --startreplaybuffer --minimize-to-tray"
+
+
   # Buttons 4-12 (empty)
   - null
   - null
