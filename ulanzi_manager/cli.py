@@ -182,6 +182,7 @@ class UlanziCLI:
     def cmd_generate_config(self, args):
         """Generate example configuration file"""
         example_config = """# Ulanzi D200 Configuration
+# Refer to example configurations!
 
 # Global settings
 brightness: 100
@@ -203,52 +204,74 @@ obs:
 
 # Button definitions (13 buttons total, 0-12)
 buttons:
-  # Button 0 - Launch Firefox
-  - image: ./icons/firefox.png
-    label: Firefox
-    action: app
-    params:
-      name: firefox
+  # Button 0
+  - image: ./icons/blank.png
+    label: B0
+    action: null
 
-  # Button 1 - Toggle OBS scene
-  - image: ./icons/obs.png
-    label: Scene
-    action: obs
-    params:
-      action: toggle_scene
-      scene1: "Scene 1"
-      scene2: "Scene 2"
+  # Button 1
+  - image: ./icons/blank.png
+    label: B1
+    action: null
 
-  # Button 2 - Execute command
-  - image: ./icons/terminal.png
-    label: Terminal
-    action: command
-    params:
-      cmd: "gnome-terminal"
+  # Button 2
+  - image: ./icons/blank.png
+    label: B2
+    action: null
 
-  # Button 3 - Keyboard shortcut
-  - image: ./icons/keyboard.png
-    label: Shortcut
-    action: key
-    params:
-      keys: "ctrl+alt+t"
+  # Button 3
+  - image: ./icons/blank.png
+    label: B3
+    action: null
 
-  # Button 4 - Toggle recording
-  - image: ./icons/record.png
-    label: Record
-    action: obs
-    params:
-      action: toggle_recording
+  # Button 4
+  - image: ./icons/blank.png
+    label: B4
+    action: null
 
-  # Buttons 5-12 - Empty (optional)
-  - null
-  - null
-  - null
-  - null
-  - null
-  - null
-  - null
-  - null
+  # Button 5
+  - image: ./icons/blank.png
+    label: B5
+    action: null
+
+  # Button 6
+  - image: ./icons/blank.png
+    label: B6
+    action: null
+
+  # Button 7
+  - image: ./icons/blank.png
+    label: B7
+    action: null
+
+  # Button 8
+  - image: ./icons/blank.png
+    label: B8
+    action: null
+
+    # Button 9
+  - image: ./icons/blank.png
+    label: B9
+    action: null
+
+  # Button 10
+  - image: ./icons/blank.png
+    label: B10
+    action: null
+
+  # Button 11
+  - image: ./icons/blank.png
+    label: B11
+    action: null
+
+  # Button 12
+  - image: ./icons/blank.png
+    label: B12
+    action: null
+
+  # Button 13 (Clock)
+  - image: ./icons/blank.png
+    action: null
 """
         output_path = Path(args.output)
         output_path.write_text(example_config)

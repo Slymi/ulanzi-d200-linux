@@ -34,38 +34,39 @@ fi
 
 # Step 3: Create config directories
 echo "3. Creating configuration directories..."
-mkdir -p ~/.config/ulanzi
-mkdir -p ~/.local/share/ulanzi
+mkdir -p /home/$SUDO_USER/.config/ulanzi/icons
+cp icons/blank.png /home/$SUDO_USER/.config/ulanzi/icons/
+mkdir -p /home/$SUDO_USER/.local/share/ulanzi
 echo "   ✓ Directories created"
 
-# Step 4: Setup ~/.local/ulanzi with venv
+# Step 4: Setup /home/$SUDO_USER/.local/ulanzi with venv
 echo "4. Setting up ~/.local/ulanzi with virtual environment..."
-mkdir -p ~/.local/ulanzi
-mkdir -p ~/.local/bin
+mkdir -p /home/$SUDO_USER/.local/ulanzi
+mkdir -p /home/$SUDO_USER/.local/bin
 
-# Create venv in ~/.local/ulanzi
+# Create venv in /home/$SUDO_USER/.local/ulanzi
 echo "   Creating virtual environment..."
-python3 -m venv ~/.local/ulanzi/venv
+python3 -m venv /home/$SUDO_USER/.local/ulanzi/venv
 
 # Install package in the new venv
 echo "   Installing package..."
-~/.local/ulanzi/venv/bin/pip install -q -e .
+/home/$SUDO_USER/.local/ulanzi/venv/bin/pip install -q -e .
 
 # Create a simple wrapper that uses the venv
-cat > ~/.local/bin/ulanzi-daemon << 'WRAPPER'
+cat > /home/$SUDO_USER/.local/bin/ulanzi-daemon << 'WRAPPER'
 #!/bin/bash
 # Wrapper for ulanzi-daemon using ~/.local/ulanzi/venv
 exec ~/.local/ulanzi/venv/bin/ulanzi-daemon "$@"
 WRAPPER
 
-chmod +x ~/.local/bin/ulanzi-daemon
+chmod +x /home/$SUDO_USER/.local/bin/ulanzi-daemon
 echo "   ✓ Virtual environment setup complete at ~/.local/ulanzi"
 echo "   ✓ Wrapper script installed at ~/.local/bin/ulanzi-daemon"
 
 # Step 5: Generate example config
 echo "5. Generating example configuration..."
-if [ ! -f ~/.config/ulanzi/config.yaml ]; then
-    ~/.local/ulanzi/venv/bin/ulanzi-manager generate-config ~/.config/ulanzi/config.yaml
+if [ ! -f /home/$SUDO_USER/.config/ulanzi/config.yaml ]; then
+    /home/$SUDO_USER/.local/ulanzi/venv/bin/ulanzi-manager generate-config /home/$SUDO_USER/.config/ulanzi/config.yaml
     echo "   ✓ Configuration generated at ~/.config/ulanzi/config.yaml"
 else
     echo "   ✓ Configuration already exists"
@@ -73,9 +74,9 @@ fi
 
 # Step 6: Copy over systemd service file
 echo "6. Copying systemd service file..."
-if [ ! -f ~/.config/systemd/user/ulanzi-daemon.service ]; then
-    mkdir -p ~/.config/systemd/user
-    cp systemd/ulanzi-daemon.service ~/.config/systemd/user/
+if [ ! -f /home/$SUDO_USER/.config/systemd/user/ulanzi-daemon.service ]; then
+    mkdir -p /home/$SUDO_USER/.config/systemd/user
+    cp systemd/ulanzi-daemon.service /home/$SUDO_USER/.config/systemd/user/
     echo "   ✓ Systemd service file copied to ~/.config/systemd/user/ulanzi-daemon.service"
 else
     echo "   ✓ Systemd Service file already exists"

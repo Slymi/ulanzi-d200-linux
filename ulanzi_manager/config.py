@@ -174,7 +174,7 @@ class ConfigParser:
                 except Exception as e:
                     errors.append(f"Button {button.index}: icon_spec error: {str(e)}")
 
-            if button.action_type not in ['command', 'obs', 'app', 'key']:
+            if button.action_type not in ['command', 'obs', 'app', 'key', None]:
                 errors.append(f"Button {button.index}: invalid action type: {button.action_type}")
 
             if button.action_type == 'command' and 'cmd' not in button.action_params:
