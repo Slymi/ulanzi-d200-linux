@@ -9,7 +9,6 @@ from pathlib import Path
 from typing import Dict, Optional, Callable
 from dataclasses import dataclass
 from enum import IntEnum
-from deepdiff import DeepDiff
 
 try:
     import hid
@@ -149,8 +148,6 @@ class UlanziDevice:
     def set_small_window_data(self, data: Dict, force=False):
         """Set small window data (status display)"""
         from datetime import datetime, timezone
-        #if not force and not DeepDiff(self._small_window_data, data):
-        #    return False
 
         mode = data.get('mode', 1)  # 0=STATS, 1=CLOCK, 2=BACKGROUND
         cpu = data.get('cpu', 0)

@@ -249,7 +249,7 @@ buttons:
     label: B8
     action: null
 
-    # Button 9
+  # Button 9
   - image: ./icons/blank.png
     label: B9
     action: null

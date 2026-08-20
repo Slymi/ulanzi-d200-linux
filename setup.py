@@ -13,7 +13,6 @@ setup(
         "obsws-python>=1.8.0",
         "pillow>=12.3.0",
         "python-daemon>=3.1.2",
-        "deepdiff>=9.1.0",
     ],
     entry_points={
         "console_scripts": [

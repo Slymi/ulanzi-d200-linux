@@ -39,12 +39,12 @@ cp icons/blank.png /home/$SUDO_USER/.config/ulanzi/icons/
 mkdir -p /home/$SUDO_USER/.local/share/ulanzi
 echo "   ✓ Directories created"
 
-# Step 4: Setup /home/$SUDO_USER/.local/ulanzi with venv
+# Step 4: Setup ~/.local/ulanzi with venv
 echo "4. Setting up ~/.local/ulanzi with virtual environment..."
 mkdir -p /home/$SUDO_USER/.local/ulanzi
 mkdir -p /home/$SUDO_USER/.local/bin
 
-# Create venv in /home/$SUDO_USER/.local/ulanzi
+# Create venv in ~/.local/ulanzi
 echo "   Creating virtual environment..."
 python3 -m venv /home/$SUDO_USER/.local/ulanzi/venv
 
