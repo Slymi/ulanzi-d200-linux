@@ -82,6 +82,13 @@ else
     echo "   ✓ Systemd Service file already exists"
 fi
 
+# Change ownership to the original user and their primary group
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) /home/$SUDO_USER/.config/ulanzi
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) /home/$SUDO_USER/.local/share/ulanzi
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) /home/$SUDO_USER/.local/ulanzi
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) /home/$SUDO_USER/.local/bin
+chown -R $SUDO_USER:$(id -gn $SUDO_USER) /home/$SUDO_USER/.config/systemd/user
+
 echo
 echo "╔════════════════════════════════════════════════════════════╗"
 echo "║              ✓ Installation Complete!                     ║"
