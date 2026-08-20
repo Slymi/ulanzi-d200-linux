@@ -1,8 +1,8 @@
-# Installation Guide
+# Manual Installation Guide
 
 ## Prerequisites
 
-- Python 3.8 or higher
+- Python 3.10 or higher
 - Linux system with USB support
 - `xdotool` for keyboard shortcuts (optional but recommended)
 
@@ -24,13 +24,13 @@ sudo dnf install python3 python3-pip xdotool hidapi
 sudo pacman -S python python-pip xdotool hidapi
 ```
 
-## Step 2: Clone and Setup
+## Step 2: Clone and Create Python Virtual Enviroment
 
 ```bash
-cd /home/lucas/Works/VibeCodedProjects/ulanzi
-python3 -m venv venv
-source venv/bin/activate
-pip install -e .
+cd /path/to/ulanzi-d200-linux/
+python3 -m venv ~/.local/ulanzi/venv
+source ~/.local/ulanzi/venv/bin/activate
+~/.local/ulanzi/venv/bin/pip install -e .
 ```
 
 ## Step 3: Install Udev Rule
@@ -46,6 +46,7 @@ sudo udevadm trigger
 ```bash
 mkdir -p ~/.config/ulanzi
 mkdir -p ~/.local/share/ulanzi
+mkdir -p ~/.local/bin
 ```
 
 ## Step 5: Generate Configuration
@@ -73,106 +74,63 @@ ulanzi-manager configure ~/.config/ulanzi/config.yaml
 ## Step 9: Run Daemon
 
 ### Option A: Manual Start
+> Must be inside virtual enviroment
 ```bash
 ulanzi-daemon ~/.config/ulanzi/config.yaml
 ```
 
 ### Option B: Systemd Service (Recommended)
 
-1. Copy service file:
+1. Create a simple wrapper that uses the venv:
+```bash
+cat > ~/.local/bin/ulanzi-daemon << 'WRAPPER'
+#!/bin/bash
+# Wrapper for ulanzi-daemon using ~/.local/ulanzi/venv
+exec ~/.local/ulanzi/venv/bin/ulanzi-daemon "$@"
+WRAPPER
+```
+
+2. Copy service file:
 ```bash
 mkdir -p ~/.config/systemd/user
 cp systemd/ulanzi-daemon.service ~/.config/systemd/user/
 ```
 
-2. Enable and start:
+3. Enable and start:
 ```bash
 systemctl --user daemon-reload
 systemctl --user enable ulanzi-daemon
 systemctl --user start ulanzi-daemon
 ```
 
-3. Check status:
+4. Check status:
 ```bash
 systemctl --user status ulanzi-daemon
 ```
 
-4. View logs:
+5. View logs:
 ```bash
 journalctl --user -u ulanzi-daemon -f
-```
-
-## Troubleshooting
-
-### Device Not Found
-```
-RuntimeError: Ulanzi D200 device not found
-```
-
-**Solution:**
-1. Check USB connection: `lsusb | grep 2207`
-2. Add user to plugdev group:
-```bash
-sudo usermod -a -G plugdev $USER
-newgrp plugdev
-```
-
-### Permission Denied / Open Failed
-```
-PermissionError: [Errno 13] Permission denied
-ERROR: open failed
-```
-
-**Solution:** Install udev rule:
-```bash
-sudo cp 99-ulanzi.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules
-sudo udevadm trigger
-```
-
-Then reconnect the device or restart.
-
-### OBS Connection Failed
-```
-Failed to connect to OBS
-```
-
-**Solution:**
-1. Ensure OBS is running
-2. Enable WebSocket Server in OBS:
-   - Tools → WebSocket Server Settings
-   - Enable WebSocket Server
-   - Note the port (default: 4444)
-3. Update config with correct host/port
-
-### Keyboard Shortcuts Not Working
-```
-xdotool not found
-```
-
-**Solution:** Install xdotool:
-```bash
-sudo apt install xdotool
 ```
 
 ## Uninstall
 
 ```bash
-# Disable systemd service
+# Disable systemd service (if using)
 systemctl --user disable ulanzi-daemon
 systemctl --user stop ulanzi-daemon
+rm ~/.config/systemd/user/ulanzi-daemon.service
 
 # Remove virtual environment
-cd /home/lucas/Works/VibeCodedProjects/ulanzi
-rm -rf venv
+rm -rf ~/.local/ulanzi/venv
 
 # Remove configuration
 rm -rf ~/.config/ulanzi
 rm -rf ~/.local/share/ulanzi
+rm -f ~/.local/bin/ulanzi-daemon
+
+# Delete udev rules
+sudo rm /etc/udev/rules.d/99-ulanzi.rules
+sudo udevadm control --reload-rules
+sudo udevadm trigger
 ```
-
-## Next Steps
-
-- Read [README.md](README.md) for usage documentation
-- Check [config.yaml](config.yaml) for configuration examples
-- Run `ulanzi-manager --help` for CLI help

@@ -94,7 +94,7 @@ buttons:
 See [docs/ICON_GENERATION.md](docs/ICON_GENERATION.md) for full icon spec options.
    
 ## Documentation
-- [🔧 Install Guide](docs/INSTALL.md)
+- [🔧 Manual Install Guide](docs/install.md)
 - [🐛 Debug & Troubleshooting](docs/troubleshooting.md)
 - [📋 Quick Reference](docs/quick_reference.md)
 - [🎨 Icon Generation](docs/ICON_GENERATION.md)
